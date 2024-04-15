@@ -8,6 +8,7 @@ import DashBoard from './Pages/DashBoard';
 import SignIn from './Pages/SignIn';
 import SignUp from './Pages/SignUp';
 import Header from "./Components/Header";
+import FooterComponent from "./Components/FooterComponent";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
         </Routes>
+        <FooterComponent/>
       </BrowserRouter>
     </>
   )
