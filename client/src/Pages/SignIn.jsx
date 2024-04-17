@@ -3,11 +3,18 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { HiInformationCircle } from "react-icons/hi";
 import { useNavigate } from 'react-router-dom';
+import {signInSuccess,signInFailure,signInStart} from "../Redux/user/userSlice.js";
+import { useSelector, useDispatch } from 'react-redux'
+
+
+
+
+
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const [errorMessage,setErrorMessage]=useState(null);
-  const [loading,setLoading]=useState(false);
   const navigate=useNavigate();
+  const dispatch=useDispatch();
+  const {loading,error:errorMessage}=useSelector(state=>state.user)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -21,8 +28,8 @@ const SignIn = () => {
 {
   return setErrorMessage("Please Fill All The Fields")
 }    try {
-  setLoading(true);
-  setErrorMessage(null);
+  dispatch(signInStart());
+  
       const res = await fetch('/api/auth/sign-in', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -32,17 +39,18 @@ const SignIn = () => {
       // alert('SignUp Successfull')
 if(data.success=== false)
 {
-  return setErrorMessage(data.message);
+  dispatch(signInFailure());
 }
-setLoading(false);
+
 if(res.ok)
 {
+  dispatch(signInSuccess())
   navigate('/')
 }
     }
     catch (error) {
       setErrorMessage(error.message)
-      setLoading(false);
+      dispatch(signInFailure());
     }
   }
 
